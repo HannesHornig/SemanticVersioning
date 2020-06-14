@@ -1,0 +1,16 @@
+version: '3'
+services:
+  jenkins:
+    image: jenkinsci/blueocean
+    ports:
+      - 8080:8080
+      - 50000:50000
+  artefactory:
+    image: docker.bintray.io/jfrog/artifactory-oss:latest
+    ports:
+      - 8081:8081 
+      - 8082:8082 
+      - 8049:8049 
+      - 8046:8046
+  gitContainer
+    image: semantic_versioning
