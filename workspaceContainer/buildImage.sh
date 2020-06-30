@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t workspaceContainer .
+docker build -t workspacecontainer .
