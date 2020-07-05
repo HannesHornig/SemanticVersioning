@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    stages {
+        stage('build') {
+	    echo "YOUR ARE ON THE BRANCH env.BRANCH_NAME"
+            steps {
+                script {
+                    if (env.BRANCH_NAME == 'master') {                     	
+		      if (${version} == 'minor') {
+			  sh 'git tags -a "0.1.0" -m "Minor version increased"'
+			  sh 'mvn clean install'
+			} else of (${version} == 'major') {
+			  sh 'git tags -a "1.0.0" -m "Major version increased"'
+			  sh 'mvn clean install'
+			} else {
+	  	          sh 'mvn clean install'
+			}
+                    } else if(env.BRANCH_NAME == 'development') {
+                        if (${version} == 'patch'){
+                          sh 'git tags -a "0.0.1" -m "Patch version increased"'
+                          sh 'mvn clean install'
+			  echo 'INSERT DEPLOYMENT HERE'
+                        } else {
+                          sh 'mvn clean install'
+			}			
+                    }else {
+                        sh 'mvn clean install'
+		    }
+                }
+            }
+        }
+    }
+}
