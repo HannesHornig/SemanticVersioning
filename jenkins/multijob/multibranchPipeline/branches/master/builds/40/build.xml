@@ -1,0 +1,346 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-build plugin="workflow-job@2.39">
+  <actions>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <hudson.model.Cause_-UserIdCause/>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <jenkins.scm.api.SCMRevisionAction plugin="scm-api@2.6.3">
+      <sourceId>e8f32e10-e800-482f-b3bd-f7f812128321</sourceId>
+      <revision class="jenkins.plugins.git.GitBranchSCMRevision" plugin="git@4.3.0">
+        <head class="jenkins.plugins.git.GitBranchSCMHead">
+          <name>master</name>
+        </head>
+        <hash>f86d4bf4e3df0a1bad9069a7addc01e7eaf4b847</hash>
+      </revision>
+    </jenkins.scm.api.SCMRevisionAction>
+    <org.jenkinsci.plugins.workflow.libs.LibrariesAction plugin="workflow-cps-global-lib@2.16">
+      <libraries/>
+    </org.jenkinsci.plugins.workflow.libs.LibrariesAction>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.ExecutionModelAction plugin="pipeline-model-definition@1.7.0">
+      <stagesUUID>a09d11ec-eb1b-4e4c-9712-98787356040c</stagesUUID>
+      <pipelineDefs>
+        <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTPipelineDef plugin="pipeline-model-api@1.7.0">
+          <stages>
+            <stages>
+              <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTStage>
+                <options>
+                  <options>
+                    <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTOption>
+                      <name>timeout</name>
+                      <args>
+                        <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTKeyValueOrMethodCallPair>
+                          <key>
+                            <key>time</key>
+                          </key>
+                          <value class="org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTValue$ConstantValue">
+                            <value class="int">45</value>
+                          </value>
+                        </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTKeyValueOrMethodCallPair>
+                        <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTKeyValueOrMethodCallPair>
+                          <key>
+                            <key>unit</key>
+                          </key>
+                          <value class="org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTValue$ConstantValue">
+                            <value class="string">SECONDS</value>
+                          </value>
+                        </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTKeyValueOrMethodCallPair>
+                      </args>
+                    </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTOption>
+                  </options>
+                  <inStage>true</inStage>
+                </options>
+                <name>Choose release Scope</name>
+                <branches>
+                  <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTBranch>
+                    <name>default</name>
+                    <steps>
+                      <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTScriptBlock>
+                        <name>script</name>
+                        <args class="org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTNamedArgumentList">
+                          <arguments class="linked-hash-map">
+                            <entry>
+                              <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTKey>
+                                <key>scriptBlock</key>
+                              </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTKey>
+                              <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTValue_-ConstantValue>
+                                <value class="string">try { 
+			env.RELEASE_SCOPE = input message: &apos;User input required&apos;,
+				parameters: [choice(name: &apos;RELEASE_SCOPE&apos;, choices: &apos;Patch\nMinor\nMajor&apos;, description: &apos;What is the release scope?&apos;)]
+	     } catch (Throwable e) {
+                        echo &quot;Timeout reached without user Input, continue CI Build}&quot;
+                        currentBuild.result = &quot;SUCCESS&quot; 
+            }</value>
+                              </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTValue_-ConstantValue>
+                            </entry>
+                          </arguments>
+                        </args>
+                      </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTScriptBlock>
+                    </steps>
+                  </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTBranch>
+                </branches>
+              </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTStage>
+              <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTStage>
+                <name>build</name>
+                <branches>
+                  <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTBranch>
+                    <name>default</name>
+                    <steps>
+                      <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTStep>
+                        <name>echo</name>
+                        <args class="org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTNamedArgumentList">
+                          <arguments class="linked-hash-map">
+                            <entry>
+                              <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTKey>
+                                <key>message</key>
+                              </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTKey>
+                              <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTValue_-GStringValue>
+                                <value class="string">&quot;YOUR ARE ON THE BRANCH ${env.BRANCH_NAME} and you choose ${env.RELEASE_SCOPE}&quot;</value>
+                              </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTValue_-GStringValue>
+                            </entry>
+                          </arguments>
+                        </args>
+                      </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTStep>
+                      <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTScriptBlock>
+                        <name>script</name>
+                        <args class="org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTNamedArgumentList">
+                          <arguments class="linked-hash-map">
+                            <entry>
+                              <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTKey>
+                                <key>scriptBlock</key>
+                              </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTKey>
+                              <org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTValue_-ConstantValue>
+                                <value class="string">sh &quot;git config --global user.email &apos;annoying@git.com&apos;&quot;
+	    sh &quot;git tag -a &apos;1.0.1&apos; -m &apos;asdasd&apos;&quot;
+	    env.LATEST_TAG = sh (script: &apos;git describe --abbrev=0&apos;, returnStdout:true) 
+	    echo &quot;Latest git tag is ${env.LATEST_TAG}&quot;
+	
+	    def major = ${env.LATEST_TAG}.split(&quot;.&quot;)[0]	   
+	    def minor = ${env.LATEST_TAG}.split(&quot;.&quot;)[1]
+	    def patch = ${env.Latest_TAG}.split(&quot;.&quot;)[2]
+
+	    echo &quot;${major} MAJOR&quot;
+ 
+
+            if (env.BRANCH_NAME == &apos;master&apos;) {       
+            
+				echo &quot;MASTER&quot;
+                          	
+            } else if(env.BRANCH_NAME == &apos;stage&apos;) {
+		
+				echo &quot;STAGE&quot;
+		
+            }else if(env.BRANCH_NAME == &apos;development&apos;) {
+          
+				echo &quot;DEVELOPMENT&quot;
+         
+	  	  }</value>
+                              </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTValue_-ConstantValue>
+                            </entry>
+                          </arguments>
+                        </args>
+                      </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTScriptBlock>
+                    </steps>
+                  </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTBranch>
+                </branches>
+              </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTStage>
+            </stages>
+            <uuid>a09d11ec-eb1b-4e4c-9712-98787356040c</uuid>
+          </stages>
+          <agent>
+            <agentType>
+              <key>any</key>
+            </agentType>
+          </agent>
+        </org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTPipelineDef>
+      </pipelineDefs>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.ExecutionModelAction>
+    <hudson.plugins.git.util.BuildData plugin="git@4.3.0">
+      <buildsByBranchName>
+        <entry>
+          <string>master</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@3.2.1">
+              <sha1>f86d4bf4e3df0a1bad9069a7addc01e7eaf4b847</sha1>
+              <branches class="singleton-set">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>master</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision reference="../marked"/>
+            <hudsonBuildNumber>40</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+      </buildsByBranchName>
+      <lastBuild reference="../buildsByBranchName/entry/hudson.plugins.git.util.Build"/>
+      <scmName></scmName>
+      <remoteUrls>
+        <string>git://gitRepo/semanticVersioning.git</string>
+      </remoteUrls>
+    </hudson.plugins.git.util.BuildData>
+    <hudson.plugins.git.GitTagAction plugin="git@4.3.0">
+      <tags class="hudson.util.CopyOnWriteMap$Tree">
+        <entry>
+          <string>master</string>
+          <list/>
+        </entry>
+      </tags>
+      <ws>/var/jenkins_home/workspace/multibranchPipeline_master</ws>
+    </hudson.plugins.git.GitTagAction>
+    <org.jenkinsci.plugins.workflow.steps.scm.MultiSCMRevisionState plugin="workflow-scm-step@2.11">
+      <revisionStates>
+        <entry>
+          <string>git git://gitRepo/semanticVersioning.git</string>
+          <hudson.scm.SCMRevisionState_-None/>
+        </entry>
+      </revisionStates>
+    </org.jenkinsci.plugins.workflow.steps.scm.MultiSCMRevisionState>
+    <com.cloudbees.jenkins.plugins.bitbucket.FirstCheckoutCompletedInvisibleAction plugin="cloudbees-bitbucket-branch-source@2.8.0"/>
+    <org.jenkinsci.plugins.workflow.cps.EnvActionImpl plugin="workflow-cps@2.80">
+      <env class="tree-map"/>
+    </org.jenkinsci.plugins.workflow.cps.EnvActionImpl>
+    <org.jenkinsci.plugins.workflow.support.steps.input.InputAction plugin="pipeline-input-step@2.11">
+      <ids class="java.util.concurrent.CopyOnWriteArrayList"/>
+    </org.jenkinsci.plugins.workflow.support.steps.input.InputAction>
+  </actions>
+  <queueId>151</queueId>
+  <timestamp>1594751142283</timestamp>
+  <startTime>1594751142287</startTime>
+  <result>FAILURE</result>
+  <duration>49046</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <execution class="org.jenkinsci.plugins.workflow.cps.CpsFlowExecution">
+    <result>FAILURE</result>
+    <script>pipeline {
+    agent any
+    stages {
+     
+	   stage(&apos;Choose release Scope&apos;){
+			options {
+                timeout(time: 45, unit: &quot;SECONDS&quot;)
+            }
+	   steps {
+			 script {
+	     try { 
+			env.RELEASE_SCOPE = input message: &apos;User input required&apos;,
+				parameters: [choice(name: &apos;RELEASE_SCOPE&apos;, choices: &apos;Patch\nMinor\nMajor&apos;, description: &apos;What is the release scope?&apos;)]
+	     } catch (Throwable e) {
+                        echo &quot;Timeout reached without user Input, continue CI Build}&quot;
+                        currentBuild.result = &quot;SUCCESS&quot; 
+            }
+           }
+	     }	   
+	   }
+     
+       stage(&apos;build&apos;) {
+            steps {
+                       
+           echo &quot;YOUR ARE ON THE BRANCH ${env.BRANCH_NAME} and you choose ${env.RELEASE_SCOPE}&quot;       
+           
+            script {
+
+	    sh &quot;git config --global user.email &apos;annoying@git.com&apos;&quot;
+	    sh &quot;git tag -a &apos;1.0.1&apos; -m &apos;asdasd&apos;&quot;
+	    env.LATEST_TAG = sh (script: &apos;git describe --abbrev=0&apos;, returnStdout:true) 
+	    echo &quot;Latest git tag is ${env.LATEST_TAG}&quot;
+	
+	    def major = ${env.LATEST_TAG}.split(&quot;.&quot;)[0]	   
+	    def minor = ${env.LATEST_TAG}.split(&quot;.&quot;)[1]
+	    def patch = ${env.Latest_TAG}.split(&quot;.&quot;)[2]
+
+	    echo &quot;${major} MAJOR&quot;
+ 
+
+            if (env.BRANCH_NAME == &apos;master&apos;) {       
+            
+				echo &quot;MASTER&quot;
+                          	
+            } else if(env.BRANCH_NAME == &apos;stage&apos;) {
+		
+				echo &quot;STAGE&quot;
+		
+            }else if(env.BRANCH_NAME == &apos;development&apos;) {
+          
+				echo &quot;DEVELOPMENT&quot;
+         
+	  	  }
+        }
+      }
+   }
+}
+}
+</script>
+    <loadedScripts class="map"/>
+    <durabilityHint>MAX_SURVIVABILITY</durabilityHint>
+    <timings class="map">
+      <entry>
+        <string>flowNode</string>
+        <long>272357941</long>
+      </entry>
+      <entry>
+        <string>classLoad</string>
+        <long>3229482896</long>
+      </entry>
+      <entry>
+        <string>run</string>
+        <long>1447436885</long>
+      </entry>
+      <entry>
+        <string>parse</string>
+        <long>2090069771</long>
+      </entry>
+      <entry>
+        <string>saveProgram</string>
+        <long>219945185</long>
+      </entry>
+    </timings>
+    <sandbox>true</sandbox>
+    <iota>41</iota>
+    <head>1:41</head>
+    <done>true</done>
+    <resumeBlocked>false</resumeBlocked>
+  </execution>
+  <completed>true</completed>
+  <checkouts class="hudson.util.PersistedList">
+    <org.jenkinsci.plugins.workflow.job.WorkflowRun_-SCMCheckout>
+      <scm class="hudson.plugins.git.GitSCM" plugin="git@4.3.0">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+          <hudson.plugins.git.UserRemoteConfig>
+            <name>origin</name>
+            <refspec>+refs/heads/*:refs/remotes/origin/*</refspec>
+            <url>git://gitRepo/semanticVersioning.git</url>
+          </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches class="singleton-list">
+          <hudson.plugins.git.BranchSpec>
+            <name>master</name>
+          </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="empty-list"/>
+        <extensions>
+          <jenkins.plugins.git.GitSCMSourceDefaults>
+            <includeTags>false</includeTags>
+          </jenkins.plugins.git.GitSCMSourceDefaults>
+          <hudson.plugins.git.extensions.impl.BuildChooserSetting>
+            <buildChooser class="jenkins.plugins.git.AbstractGitSCMSource$SpecificRevisionBuildChooser">
+              <revision reference="../../../../../../../actions/hudson.plugins.git.util.BuildData/buildsByBranchName/entry/hudson.plugins.git.util.Build/marked"/>
+            </buildChooser>
+          </hudson.plugins.git.extensions.impl.BuildChooserSetting>
+        </extensions>
+      </scm>
+      <node></node>
+      <workspace>/var/jenkins_home/workspace/multibranchPipeline_master</workspace>
+      <changelogFile>/var/jenkins_home/jobs/multibranchPipeline/branches/master/builds/40/changelog2793823903849728939.xml</changelogFile>
+      <pollingBaseline class="hudson.scm.SCMRevisionState$None" reference="../../../actions/org.jenkinsci.plugins.workflow.steps.scm.MultiSCMRevisionState/revisionStates/entry/hudson.scm.SCMRevisionState_-None"/>
+    </org.jenkinsci.plugins.workflow.job.WorkflowRun_-SCMCheckout>
+  </checkouts>
+</flow-build>

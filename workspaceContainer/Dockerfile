@@ -11,6 +11,7 @@ RUN cd my-app &&\
 	git init &&\
     git remote add origin git://gitRepo/semanticVersioning.git &&\
     git config --global user.email "you@example.com"
+COPY Jenkinsfile /my-app/    
 COPY extensions.xml /my-app/.mvn
 COPY jgitver.config.xml /my-app/.mvn    
 ENTRYPOINT ["tail","-f","/dev/null"]

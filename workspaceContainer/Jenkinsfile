@@ -1,33 +1,107 @@
 pipeline {
     agent any
     stages {
-        stage('build') {
-	    echo "YOUR ARE ON THE BRANCH env.BRANCH_NAME"
-            steps {
-                script {
-                    if (env.BRANCH_NAME == 'master') {                     	
-		      if (${version} == 'minor') {
-			  sh 'git tags -a "0.1.0" -m "Minor version increased"'
-			  sh 'mvn clean install'
-			} else of (${version} == 'major') {
-			  sh 'git tags -a "1.0.0" -m "Major version increased"'
-			  sh 'mvn clean install'
-			} else {
-	  	          sh 'mvn clean install'
-			}
-                    } else if(env.BRANCH_NAME == 'development') {
-                        if (${version} == 'patch'){
-                          sh 'git tags -a "0.0.1" -m "Patch version increased"'
-                          sh 'mvn clean install'
-			  echo 'INSERT DEPLOYMENT HERE'
-                        } else {
-                          sh 'mvn clean install'
-			}			
-                    }else {
-                        sh 'mvn clean install'
-		    }
-                }
+     
+	stage('Choose release Scope'){
+	  options {
+                timeout(time: 10, unit: "SECONDS")
             }
+	  
+	   steps {
+	 	 script {
+	
+	 if (env.BRANCH_NAME == 'master'|| env.BRANCH_NAME == 'stage'|| env.BRANCH_NAME == 'development'){
+           try { 
+		env.RELEASE_SCOPE = input message: 'User input required',
+	  	   parameters: [choice(name: 'RELEASE_SCOPE', choices: 'Patch\nMinor\nMajor', description: 'What is the release scope?')]
+	     } catch (Throwable e) {
+                   echo "Timeout reached without user Input, continue CI Build"
+                   currentBuild.result = "SUCCESS" 
+            	}
+              }
+	    }
+	  }
+	}	   
+      	stage('build') {
+            steps {
+                       
+           echo "YOUR ARE ON THE BRANCH ${env.BRANCH_NAME} and you choose ${env.RELEASE_SCOPE}"       
+           
+            script {
+
+	    sh "git config --global user.email 'annoying@git.com'"
+
+	    env.TAG = sh (script: 'git describe --abbrev=0', returnStdout:true) 
+	    env.MAJOR = sh (script: 'git describe --abbrev=0 | cut -f1 -d "." ', returnStdout:true) 
+	    env.NEXT_MAJOR = sh (script: 'git describe --abbrev=0 | cut -f1 -d "." | xargs -n 1 expr 1 + ', returnStdout:true) 
+            env.MINOR = sh (script: 'git describe --abbrev=0 | cut -f2 -d "." ', returnStdout:true) 
+	    env.NEXT_MINOR = sh (script: 'git describe --abbrev=0 | cut -f2 -d "." | xargs -n 1 expr 1 + ', returnStdout:true) 
+	    env.PATCH = sh (script: 'git describe --abbrev=0 | cut -f3 -d "." ', returnStdout:true) 
+	    env.NEXT_PATCH = sh (script: 'git describe --abbrev=0 | cut -f3 -d "." | xargs -n 1 expr 1 + ', returnStdout:true) 
+
+	    echo "Latest tag ${env.TAG}"
+  	    echo "MAJOR ${env.MAJOR} and next MAJOR ${env.NEXT_MAJOR}"
+   	    echo "MINOR ${env.MINOR} and next MINOR ${env.NEXT_MINOR}"	  	   
+   	    echo "PATCH  ${env.PATCH} and next PATCH ${env.NEXT_PATCH}"	  	   
+
+            if (env.BRANCH_NAME == 'master') {       
+           	echo "MASTER"
+
+	      try { 
+		  env.RELEASE_MASTER = input message: 'User input required',
+	  	     parameters: [choice(name: 'RELEASE_SCOPE', choices: 'YES\nNO', description: 'Release on live?')]
+	       } catch (Throwable e) {
+                   echo "Timeout reached without user Input, continue CI Build"
+                   currentBuild.result = "SUCCESS" 
+               }
+
+	      if(env.RELEASE_MASTER == 'YES'){
+		if(env.RELEASE_SCOPE == 'Patch'){
+		 echo "Change Version to ${env.MAJOR}.${env.MINOR}.{env.NEXT_PATCH}"
+		 sh "git tag -a ${env.MAJOR}.${env.MINOR}.{env.NEXT_PATCH} -m 'PATCH RELEASE'"		
+		 sh "mvn clean install"
+		 // DEPLOY HERE
+		} else if(env.RELEASE_SCOPE == 'Minor'){
+		 echo "Change Version to ${env.MAJOR}.${env.NEXT_MINOR}.{env.PATCH}"
+		 sh "git tag -a ${env.MAJOR}.${env.NEXT_MINOR}.{env.PATCH} -m 'MINOR RELEASE'"		
+		 sh "mvn clean install"
+		 // DEPLOY HERE
+		} else if(env.RELEASE_SCOPE == 'Major'){
+		 echo "Change Version to ${env.NEXT_MAJOR}.${env.MINOR}.{env.PATCH}"
+		 sh "git tag -a ${env.NEXT_MAJOR}.${env.MINOR}.{env.PATCH} -m 'MAJOR RELEASE'"		
+		 sh "mvn clean install"
+		 // DEPLOY HERE 
+		} else {
+		 sh "mvn clean test"
+		}
+	      }else{
+		 sh "mvn clean test"
+		}
+            } else if(env.BRANCH_NAME == 'stage' || env.BRANCH_NAME == 'development') {
+		echo "${env.BRANCH_NAME}"
+
+	       if(env.RELEASE_SCOPE == 'Minor'){
+		 echo "Change Version to ${env.MAJOR}.${env.NEXT_MINOR}.{env.PATCH}"
+		 sh "git tag -a ${env.MAJOR}.${env.NEXT_MINOR}.{env.PATCH} -m 'MINOR RELEASE'"		
+		 sh "mvn clean install"
+		 // DEPLOY HERE
+		} else if(env.RELEASE_SCOPE == 'Major'){
+		 echo "Change Version to ${env.NEXT_MAJOR}.${env.MINOR}.{env.PATCH}"
+		 sh "git tag -a ${env.NEXT_MAJOR}.${env.MINOR}.{env.PATCH} -m 'MAJOR RELEASE'"		
+		 sh "mvn clean install"
+		 // DEPLOY HERE 
+	       }else{
+		 echo "Change Version to ${env.MAJOR}.${env.MINOR}.{env.NEXT_PATCH}"
+		 sh "git tag -a ${env.MAJOR}.${env.MINOR}.{env.NEXT_PATCH} -m 'PATCH RELEASE'"		
+		 sh "mvn clean install"
+		 // DEPLOY HERE
+		}
+      
+       	    }else{
+              sh "mvn clean test"   	 
+  	  }
         }
+      }
     }
+  }
 }

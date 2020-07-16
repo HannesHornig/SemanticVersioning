@@ -1,0 +1,27 @@
+Started by timer
+[Thu Jul 16 20:24:00 GMT 2020] Starting branch indexing...
+ > git --version # timeout=10
+ > git ls-remote --symref -- git://gitRepo/semanticVersioning.git # timeout=10
+ > git rev-parse --is-inside-work-tree # timeout=10
+Setting origin to git://gitRepo/semanticVersioning.git
+ > git config remote.origin.url git://gitRepo/semanticVersioning.git # timeout=10
+Fetching & pruning origin...
+Listing remote references...
+ > git config --get remote.origin.url # timeout=10
+ > git --version # timeout=10
+ > git ls-remote -h -- git://gitRepo/semanticVersioning.git # timeout=10
+Fetching upstream changes from origin
+ > git config --get remote.origin.url # timeout=10
+ > git fetch --tags --force --progress --prune -- origin +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking branches...
+  Checking branch secondbranch
+      ‘Jenkinsfile’ found
+    Met criteria
+No changes detected: secondbranch (still at 25b59f7e72a350dbf394e7e49c2eb5caa8e93bd1)
+  Checking branch master
+      ‘Jenkinsfile’ found
+    Met criteria
+No changes detected: master (still at ff3ffa7037d7d429d957b711160ad5cd9dd4bb1b)
+Processed 2 branches
+[Thu Jul 16 20:24:00 GMT 2020] Finished branch indexing. Indexing took 74 ms
+Finished: SUCCESS
