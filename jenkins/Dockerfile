@@ -10,7 +10,7 @@ RUN cat /usr/share/jenkins/plugins.txt | /usr/local/bin/install-plugins.sh
 COPY config.xml /var/jenkins_home
 
 # Copying the jobs
-COPY multijob/config.xml /usr/share/jenkins/ref/jobs/multijob/config.xml
+COPY multijob/multibranchPipeline /usr/share/jenkins/ref/jobs/multibranchPipeline
 
 # Skip inital Setup 
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
