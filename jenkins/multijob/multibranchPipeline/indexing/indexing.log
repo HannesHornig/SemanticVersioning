@@ -1,8 +1,10 @@
-Started by timer
-[Thu Jul 16 20:24:00 GMT 2020] Starting branch indexing...
+Started
+[Tue Jul 28 20:15:46 GMT 2020] Starting branch indexing...
  > git --version # timeout=10
  > git ls-remote --symref -- git://gitRepo/semanticVersioning.git # timeout=10
- > git rev-parse --is-inside-work-tree # timeout=10
+ > git ls-remote -- git://gitRepo/semanticVersioning.git # timeout=10
+Creating git repository in /var/jenkins_home/caches/git-9e8020af5ccd27a26404d354b5ebf0da
+ > git init /var/jenkins_home/caches/git-9e8020af5ccd27a26404d354b5ebf0da # timeout=10
 Setting origin to git://gitRepo/semanticVersioning.git
  > git config remote.origin.url git://gitRepo/semanticVersioning.git # timeout=10
 Fetching & pruning origin...
@@ -14,14 +16,9 @@ Fetching upstream changes from origin
  > git config --get remote.origin.url # timeout=10
  > git fetch --tags --force --progress --prune -- origin +refs/heads/*:refs/remotes/origin/* # timeout=10
 Checking branches...
-  Checking branch secondbranch
-      ‘Jenkinsfile’ found
-    Met criteria
-No changes detected: secondbranch (still at 25b59f7e72a350dbf394e7e49c2eb5caa8e93bd1)
-  Checking branch master
-      ‘Jenkinsfile’ found
-    Met criteria
-No changes detected: master (still at ff3ffa7037d7d429d957b711160ad5cd9dd4bb1b)
-Processed 2 branches
-[Thu Jul 16 20:24:00 GMT 2020] Finished branch indexing. Indexing took 74 ms
+Processed 0 branches
+[Tue Jul 28 20:15:47 GMT 2020] Finished branch indexing. Indexing took 0.38 sec
+Evaluating orphaned items in multibranchPipeline
+Will remove master
+Will remove secondbranch
 Finished: SUCCESS
