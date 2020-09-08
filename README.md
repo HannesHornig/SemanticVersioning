@@ -5,7 +5,7 @@ Trying out <a href="https://github.com/jgitver/jgitver">JgitVer</a>, a maven plu
 * pushing a Java project with Jenkinsfile and JgitVer config to it 
 * and letting a Jenkins Server pull and build it automatically
 
-was modelled using multiple Docker-Files and a Docker-Compose file.
+was modelled, using multiple Docker-Files and a Docker-Compose file.
 
 ## This Project can be usefull if you want to see an example of
 
