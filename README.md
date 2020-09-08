@@ -1,6 +1,6 @@
 # SemanticVersioning
 
-Trying out <a href="https://github.com/jgitver/jgitver">JgitVer</a>, a maven plugin which uses git tags and other meta-information to calculate version numbers. To do this in a reproduceable manner the basic workflow of:
+Trying out <a href="https://github.com/jgitver/jgitver">JgitVer</a>, a maven plugin which uses git tags and other meta-information to calculate version numbers. To do this in a reproducible manner the basic workflow of:
 * creating a git repo
 * pushing a Java project with Jenkinsfile and JgitVer config to it 
 * and letting a Jenkins Server pull and build it automatically
